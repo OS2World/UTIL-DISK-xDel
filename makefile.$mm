@@ -1,0 +1,34 @@
+:TARGET.SUFFIXES
+:TARGET.SUFFIXES
+:DEPENDENCY..c .obj 
+:TARGET.all
+:DEPENDENCY.
+.\xDel.exe
+:RULE..c.obj
+:ACTION.Compile::C++ Compiler
+:COMMAND.
+icc.exe /Ss /O /Gm /C %s
+:RULE.{e:\data\c\xdel}.c.obj
+:ACTION.Compile::C++ Compiler
+:COMMAND.
+icc.exe /Ss /O /Gm /C %s
+:TARGET..\xDel.exe
+:DEPENDENCY.
+.\xdel.obj
+{$(LIB)}os2386.lib
+{$(LIB)}cppom30.lib
+{$(LIB)}xdel.def
+:ACTION.Link::Linker
+:COMMAND.
+icc.exe @<<
+ /B" /exepack:2 /packd /optfunc"
+ /FexDel.exe 
+ os2386.lib 
+ cppom30.lib 
+ xdel.def
+ .\xdel.obj
+<<
+:TARGET..\xdel.obj
+:DEPENDENCY.
+e:\data\c\xdel\xdel.c
+{e:\data\c\xdel;$(INCLUDE);}xdel.h

@@ -1,0 +1,24 @@
+                          Upload Information Template for Hobbes.nmsu.edu
+                          ===============================================
+        Archive Filename: xDel101.zip
+       Short Description: eXtended Delete (OpenSource binary+source)
+        Long Description: eXtended Delete is a version of delete with a
+                          lot of extra options. It supports recursing
+                          into directories, forced deletion, and piping
+                          among others. OpenSource binary and source
+                          code in the same archive. THIS IS A BUGFIX OF
+                          OF THE 1.0 VERSION, PLEASE DOWNLOAD IF YOU USE
+                          THE 1.0 VERSION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      Proposed directory
+           for placement: pub/os2/util/file
+               Your name: D.J. van Enckevort
+           Email address: van.enckevort@hccnet.nl
+    Program contact name: D.J. van Enckevort
+   Program contact email: van.enckevort@hccnet.nl
+             Program URL: http://home.hccnet.nl/van.enckevort
+      Would you like the
+   contact email address
+    included in listings? yes
+Operating System/Version: OS/2 probably 2.0 or up, tested on 4.0
+ Additional requirements: (none)
+                Replaces: xDel10.zip xDel.zip

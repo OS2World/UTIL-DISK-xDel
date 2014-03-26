@@ -1,0 +1,319 @@
+xDel README                                                              page 1
+
+    xDel is a program to replace the OS/2 del command
+    Copyright (C) 1999 D.J. van Enckevort
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+    See the file COPYING for the full text of the GNU General Public License
+
+    TABLE OF CONTENTS
+
+       1. INTRODUCTION
+
+       2. INSTALLATION
+
+       3. COMMAND LINE OPTIONS
+
+       4. ENVIRONMENT SETTINGS
+
+       5. KNOWN LIMITATIONS
+
+       6. CONTACT INFORMATION
+
+       7. HISTORY
+
+xDel README - 1. INTRODUCTION                                            page 2
+
+    INTRODUCTION
+    ============
+
+    Welcome to xDel. This is a program I wrote to allow myself to easily
+    delete a lot of temporal files. To allow this I needed a program that
+    supports piping. I think the support for piping is what sets this
+    program apart from other programs like rm.
+
+    xDel is a very powerful program and it supports everything you would
+    expect from a deletion tool. This power however also makes it easy to
+    make fatal mistakes. I think it is important to say right here that
+    this program is released as free OpenSource software and comes without
+    any warranty. It is published under the GNU public License and you can
+    find the license in the file COPYING. Having said that, I don't think
+    the program can cause damage when used properly, I tested the program
+    in real life situations at my own computer. To make the best use of the
+    program and to avoid fatal mistakes I strongly urge you to read this
+    document completely. It provides vital information on how to set up
+    your configuration.
+
+    People who want a quick start I strongly urge to really read this
+    document completely, but if you really don't have time you should at
+    least read the sections INSTALLATION, COMMAND LINE OPTIONS and KNOWN
+    LIMITATIONS. This will provide you with the information you need to
+    avoid fatal mistakes.
+
+    If you want you can print this document on a printer. It is prepared
+    for a layout of 55 lines and 80 columns
+
+
+xDel README - 2. INSTALLATION                                            page 3
+
+    INSTALLATION
+    ============
+
+    Installation of xDel is quite straight forward. The program is
+    distributed as a single zip file, which you can extract with info-zip's
+    unzip. (But since you are reading this file, you probably already did
+    that). To extract the files type at your command line
+
+      unzip xDel.zip
+
+    I suggest you place the files in their own subdirectory and add that
+    directory to your path in the CONFIG.SYS. If you didn't already extract
+    the files to their own directory you can move them to another directory
+    with the OS/2 command move.
+
+    After extracting you will have the following files:
+
+      COPYING
+      makefile
+      README
+      xDel.c
+      xDel.def
+      xDel.exe
+      xDel.h
+
+    COPYING contains the GNU General Public License, README is this file
+    you are reading right now and xDel.exe is the program executable. The
+    other files contain the source code of xDel and are only relevant if
+    you want to recompile the program yourself, or want to use the code.
+
+    Now you have extracted the files you should add the directory in which
+    you extracted the program to your PATH in the CONFIG.SYS. I would
+    advise to add the directory at the end of the PATH statement. At the
+    same time you should consider adding
+
+      SET XDEL_OPTIONS=/i
+
+    or at least
+
+      SET XDEL_OPTIONS=/v
+
+    to your CONFIG.SYS. XDEL_OPTIONS is a environment variable and contains
+    options for xDel. The option /i tells xDel to confirm every deletion
+    with a simple yes/no question. The option /v tells xDel to display all
+    the names of the files it deletes. By setting one of these options you
+    can allow yourself to familiarize yourself with the program and see
+    whether it is doing what you want it to do. When you feel more
+    comfortable with the program you can change the options.
+
+    That is all what is needed to install xDel. You should reboot OS/2 to
+    make the new settings in your CONFIG.SYS active, or you should type the
+    following commands every time you open a OS/2 command line:
+
+xDel README - 2. INSTALLATION                                            page 4
+
+      SET XDEL_OPTIONS=<options>
+      SET PATH=%PATH%;<xdel_path>
+
+    Where you should replace <options> with the options you want to be
+    active all the time, and <xdel_path> with the full path of the
+    directory in which you installed xDel.
+
+
+xDel README - 3. COMMAND LINE OPTIONS                                    page 5
+
+    COMMAND LINE OPTIONS
+    ====================
+
+    xDel has several command line options which define how the program
+    operates. All the options can be placed anywhere on the command line
+    and are active only for the file specifications that occur after the
+    option. The command line options are the same as the options in the
+    XDEL_OPTIONS environment variable, and are in addition to these
+    options.
+
+    A typical command line for xDel could look like this:
+
+      [C:]xDel /s test\*.* /r /f temp\*.* temp
+
+    In this case the /s option would be used for test\*.* as well as for
+    temp\*.* and temp. The options /r and /f would both be used for
+    temp\*.* and temp only. This command would delete all files in the
+    directory test and its subdirectories (/s option), but leave the
+    directory structure intact and hidden, system or readonly files would
+    not be deleted. However for the directory temp it would not only delete
+    all file, including hidden, system and readonly files (because of /f),
+    but also delete the subdirectories. Finally it would delete the
+    directory temp itself too.
+
+    xDel can give you a list of command line options if you add the /h or
+    /? command line option. The full list of options is as follows:
+
+      /f        Forced deletion
+      /h or /?  Help
+      /i        Interactive mode
+      /r        Remove subdirectories
+      /s        Recurse into subdirectories
+      /u        Unrecoverable delete
+      /v        Verbose mode
+      /-        Read filenames from standard input
+
+    The command line options can be mixed with file specifications, where
+    only the options that come before the file specifications are used. In
+    this way you can use different options for different file
+    specifications. The file specifications are composed of normal
+    characters and the two standard OS/2 wildcards ? and *. The ? stands
+    for only one character, while * stands for any series of characters.
+
+    A explanation of the options follows:
+
+      /f        Forced deletion
+
+    If the /f option is given xDel will delete also any file with the
+    hidden, read-only or system attribute set. If the option is not given
+    read-only files will cause a Access denied error and hidden or system
+    files will simply be ignored.
+
+
+xDel README - 3. COMMAND LINE OPTIONS                                    page 6
+
+      /h or /?  Help
+
+    The /h or /? options prints a short help message on screen with all the
+    command line options. /h and /? are actually the same, but both are
+    supported, because there is no real convention to use either /? or /h.
+
+      /i        Interactive mode
+
+    Interactive mode allows you to confirm the deletion of each separate
+    file. xDel will ask you to confirm the deletion of each file with a
+    simple Y(es) or N(o) question.
+
+      /r        Remove subdirectories
+
+    The /r option instructs xDel to remove subdirectories that math the
+    file specification too. The subdirectories will only be deleted if they
+    are empty, otherwise a access denied error message will be given. xDel
+    will not recurse into subdirectories when the /r option is given. To
+    let xDel recurse into subdirectories you should give the /s option.
+
+      /s        Recurse into subdirectories
+
+    The /s option instructs xDel to recurse into subdirectories and delete
+    all the files that match the file specification in the subdirectories
+    too. The /s option does not instruct xDel to delete subdirectories
+    itself. For example if you give the command xDel /s temp\test.* it will
+    delete all files that start with test. in the directory temp and all
+    files that start with test. in the subdirectories of temp, but it will
+    not delete a subdirectory test of the directory temp.
+
+      /u        Unrecoverable delete
+
+    If this option is given xDelete will use the DosForceDelete function,
+    and it will be impossible to recover files with undelete.
+
+      /v        Verbose mode
+
+    The /v option instructs xDel to print the name of the file on stdout,
+    which is usually the screen.
+
+      /-        Read filenames from standard input
+
+    The /- option tells xDel to read, in addition to the command line, file
+    specifications from stdin. stdin is usually the keyboard input, but it
+    can also be input from a pipe, as in the following example:
+
+      dir temp\*.* /s /b /-p | xDel /-
+
+    In this example it will get the output from the dir command and delete
+    all files in the temp directory and its subdirectories.
+
+
+
+xDel README - 4. ENVIRONMENT SETTINGS                                    page 7
+
+    ENVIRONMENT SETTINGS
+    ====================
+
+    Before parsing the command line xDel will look for the environment
+    variable XDEL_OPTIONS, and if it is available use the options sepcified
+    in this variable for all file specifications. It is not possible to
+    negate any option in the XDEL_OPTIONS with a command line option. If
+    you want to negate an option you should use the beginlocal and endlocal
+    options of the OS/2 Command line interpreter CMD.EXE. The options are
+    the same as on the command line and each option has to be separated
+    from the next by a whitespace.
+
+
+xDel README - 5. KNOWN LIMITATIONS                                       page 8
+
+    KNOWN LIMITATIONS
+    =================
+
+    xDel has a few limitations, however none of them do limit the use of
+    the application.
+
+    It is impossible to negate command line options so you should take
+    care of the order in which command line options are placed. Sometimes
+    it might be necessary to split up the job in two or more parts.
+
+    If you specify the name of a directory to delete, a directory will only
+    be deleted if it is empty. To delete the directory and its contents you
+    should first specify to delete all contents of the directory and then
+    the directory itself. For example:
+
+      xDel /s /r test\*.* test
+
+    Is the proper command to delete the directory test and its contents.
+    This is different from the way del or rm work, but seen the power of
+    the program this is a safety precaution.
+
+
+
+xDel README - 6. CONTACT INFORMATION                                     page 9
+
+    CONTACT INFORMATION
+    ===================
+
+    If you have questions about this program, or want to report a bug or
+    give suggestion you can reach me at my e-mail address:
+
+      van.enckevort@hccnet.nl
+
+    Or you can have a look at my homepage at:
+
+     http://home.hccnet.nl/van.enckevort
+
+    If you can't reach me this way, you can always try through USENET. I
+    monitor most of the OS/2 newsgroups, but you will have the best chance
+    of success if you try:
+
+      comp.os.os2.apps
+      comp.os.os2.bugs
+      comp.os.os2.misc
+      nl.comp.os.os2
+      it.comp.os.os2
+
+
+xDel README - 7. HISTORY                                                page 10
+
+    HISTORY
+    =======
+
+    July, 30 1999   Initial release of xDel
+    August, 6 1999  1.01 release, fixed a serious bug, added the /u option
+                    for unrecoverable deletion.
+
+
